@@ -17,7 +17,19 @@ def run(source):
     ...
     
 def runprompt():
-    ...
+    while True:
+        try:
+            line = input("jilox> ")
+            if line.strip() == "exit":
+                break
+            run(line)
+        except EOFError:
+            break
+        except KeyboardInterrupt:
+            print("\nExiting... :)")
+            break
+        except Exception as e:
+            print(f"Error: {e}")
 
 def main():
     if len(sys.argv) > 2:
