@@ -1,7 +1,15 @@
 import sys
 import os
+import tokenize
+from io import StringIO
 
 def runfile(filename):
+    """Run the file with the given filename.
+    This function reads the file, and executes it.
+
+    Args:
+        filename (str): Path to the file to be executed
+    """
     try:
         with open(filename, 'r', encoding='utf-8') as file:
             content = file.read()
@@ -14,7 +22,25 @@ def runfile(filename):
         sys.exit(74)  # EX_IOERR
 
 def run(source):
-    ...
+    """Run the source code.
+    Gokenizes the source code and prints the tokens.
+
+    Args:
+        source (str): Line of code to be executed
+    """
+    try:
+        tokens = []
+        source_io = StringIO(source)
+        for token in tokenize.generate_tokens(source_io.readline):
+            tokens.append(token)
+            
+        for token in tokens:
+            print(token)
+            
+    except tokenize.TokenError as e:
+        print(f"Error tokenizing input: {e}")
+    except Exception as e:
+        print(f"Error: {e}")
     
 def runprompt():
     while True:
