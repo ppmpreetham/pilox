@@ -23,9 +23,18 @@ Pilox is an interpreted programming language built from scratch as a learning pr
 
 ## Installation
 
-*Coming soon*
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/jilox.git
+cd jilox
+
+# No installation required - pure Python implementation
+```
 
 ## Usage
+```bash
+python language/main.py
+```
 
 ### REPL Mode
 
@@ -37,12 +46,19 @@ pilox
 
 This will start the Pilox REPL where you can write and execute code line by line.
 
+```bash
+pilox> var greeting = "Hello, world!";
+pilox> print greeting;
+Hello, world!
+pilox> exit
+```
+
 ### Running Scripts
 
 To execute a Pilox script file:
 
 ```bash
-pilox path/to/script.jlx
+pilox ./path/to/script.plx
 ```
 
 ## Examples
@@ -53,16 +69,48 @@ print "Hello, World!";
 ```
 
 ### Variables
-*Coming soon*
+`*Coming soon*`
+will look like:
+```c
+var name = "Pilox";
+var version = 0.1;
+print "Running " + name + " version " + version;
+```
 
 ### Control Flow
-*Coming soon*
+`*Coming soon*`
+will look like:
+```c
+var max = 10;
+var i = 0;
+
+while (i < max) {
+  print i;
+  i = i + 1;
+}
+```
 
 ### Functions
-*Coming soon*
+`*Coming soon*`
+will look like:
+```c
+fun factorial(n) {
+  if (n <= 1) return 1;
+  return n * factorial(n - 1);
+}
 
+print factorial(5); // Outputs: 120
+```
 ## Project Structure
-*Coming soon*
+```python
+pilox/
+├── language/
+│   ├── main.py          # Entry point for the interpreter
+│   ├── scanner.py       # Lexical analyzer
+│   └── TokenType.py     # Token definitions
+├── examples/            # Example pilox programs
+└── README.md
+```
 
 ## Implementation Details
 
