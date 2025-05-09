@@ -26,8 +26,8 @@ Pilox is an interpreted programming language built from scratch as a learning pr
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/jilox.git
-cd jilox
+git clone https://github.com/ppmpreetham/pilox.git
+cd pilox
 
 # No installation required - pure Python implementation
 ```
