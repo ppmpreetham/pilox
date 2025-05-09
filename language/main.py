@@ -3,7 +3,7 @@ import tokenize
 from io import StringIO
 from enum import Enum, auto
 
-from language.TokenType import TokenType, Token
+from TokenType import TokenType, Token
 
 hadError = False
 hadRuntimeError = False
