@@ -9,7 +9,8 @@ A simple programming language implementation for understanding interpreters and 
 
 Pilox is an interpreted programming language built from scratch as a learning project. It's inspired by the Crafting Interpreters approach but with some unique additions. This project aims to demystify how programming languages work under the hood.
 
-> ⚠️ **Note**: This project is currently under active development. Many features are incomplete or may change.
+> [!NOTE]  
+> This project is currently under active development. Many features are incomplete or may change.
 
 ## Features
 

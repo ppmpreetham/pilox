@@ -69,16 +69,35 @@ class Scanner:
             case '*':
                 self.addToken(TokenType.STAR)
             case '!':
-                self.twoPairCheck('=', TokenType.BANG, TokenType.BANG_EQUAL)
+                # self.twoPairCheck('=', TokenType.BANG, TokenType.BANG_EQUAL)
+                self.addToken(TokenType.BANG_EQUAL if self.match('=') else TokenType.BANG)
             case '=':
-                self.twoPairCheck('=', TokenType.EQUAL, TokenType.EQUAL_EQUAL)
+                # self.twoPairCheck('=', TokenType.EQUAL, TokenType.EQUAL_EQUAL)
+                self.addToken(TokenType.EQUAL_EQUAL if self.match('=') else TokenType.EQUAL)
             case '<':
-                self.twoPairCheck('=', TokenType.LESS, TokenType.LESS_EQUAL)
+                # self.twoPairCheck('=', TokenType.LESS, TokenType.LESS_EQUAL)
+                self.addToken(TokenType.LESS_EQUAL if self.match('=') else TokenType.LESS)
             case '>':
-                self.twoPairCheck('=', TokenType.GREATER, TokenType.GREATER_EQUAL)
+                # self.twoPairCheck('=', TokenType.GREATER, TokenType.GREATER_EQUAL)
+                self.addToken(TokenType.GREATER_EQUAL if self.match('=') else TokenType.GREATER)
             case _:
                 print("UNEXPECTED CHARACTER, PILO IS ANGY NOW!!")
     
+    def match(self, expected: str) -> bool:
+        """Check if the next character matches the expected character.
+
+        Args:
+            expected (str): the expected character
+
+        Returns:
+            bool: True if it matches, False otherwise
+        """
+        if self.isAtEnd() or self.source[self.current] != expected:
+            return False
+        self.current += 1
+        return True
+    
+    # NOT USING THIS FUNCTION ANYMORE, KEEP IT FOR FUTURE REFERENCE
     def twoPairCheck(self, char: str, first: TokenType, second: TokenType):
         """Check if the character is a two-pair character and add the appropriate token.
 
