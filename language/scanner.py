@@ -10,11 +10,6 @@ class Scanner:
     source = ""
     
     def __init__(self, source: str):
-        """Scans a given source code and returns a list of tokens.
-
-        Args:
-            source (str): the source code to be scanned
-        """
         self.source = source
         
     def scanTokens(self) -> List[Token]:
@@ -51,6 +46,8 @@ class Scanner:
     def scanToken(self):
         c = self.advance()
         match c:
+            case '|':
+                self.addToken(TokenType.PIPE)
             case '(':
                 self.addToken(TokenType.LEFT_PAREN)
             case ')':
@@ -71,7 +68,31 @@ class Scanner:
                 self.addToken(TokenType.SEMICOLON)
             case '*':
                 self.addToken(TokenType.STAR)
-                
-    def addToken(self, type: TokenType, literal: object):
+            case '!':
+                self.twoPairCheck('=', TokenType.BANG, TokenType.BANG_EQUAL)
+            case '=':
+                self.twoPairCheck('=', TokenType.EQUAL, TokenType.EQUAL_EQUAL)
+            case '<':
+                self.twoPairCheck('=', TokenType.LESS, TokenType.LESS_EQUAL)
+            case '>':
+                self.twoPairCheck('=', TokenType.GREATER, TokenType.GREATER_EQUAL)
+            case _:
+                print("UNEXPECTED CHARACTER, PILO IS ANGY NOW!!")
+    
+    def twoPairCheck(self, char: str, first: TokenType, second: TokenType):
+        """Check if the character is a two-pair character and add the appropriate token.
+
+        Args:
+            char (str): the character to check
+            first (TokenType): the token type if no match
+            second (TokenType): the token type if matched
+        """
+        if not self.isAtEnd() and self.source[self.current] == char:
+            self.current += 1
+            self.addToken(second)
+        else:
+            self.addToken(first)
+    
+    def addToken(self, type: TokenType, literal: object = None):
         text = self.source[self.start : self.current]
         self.tokens.append(Token(type, text, literal, self.line))

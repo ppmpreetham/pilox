@@ -1,9 +1,6 @@
 import sys
-import tokenize
-from io import StringIO
-from enum import Enum, auto
-
 from TokenType import TokenType, Token
+from scanner import Scanner
 
 hadError = False
 hadRuntimeError = False
@@ -42,16 +39,16 @@ def run(source):
         source (str): Line of code to be executed
     """
     try:
-        tokens = []
-        source_io = StringIO(source)
-        for token in tokenize.generate_tokens(source_io.readline):
-            tokens.append(token)
-            
+        # Create a scanner with the source code
+        scanner = Scanner(source)
+        
+        # Scan tokens
+        tokens = scanner.scanTokens()
+        
+        # Print each token
         for token in tokens:
             print(token)
             
-    except tokenize.TokenError as e:
-        print(f"Error tokenizing input: {e}")
     except Exception as e:
         print(f"Error: {e}")
     

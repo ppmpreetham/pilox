@@ -1,7 +1,5 @@
 from enum import Enum, auto
 
-from enum import Enum, auto
-
 class TokenType(Enum):
     # Single-character tokens
     LEFT_PAREN = auto()
@@ -25,6 +23,7 @@ class TokenType(Enum):
     GREATER_EQUAL = auto()
     LESS = auto()
     LESS_EQUAL = auto()
+    PIPE = auto()
     
     # Literals
     IDENTIFIER = auto()
