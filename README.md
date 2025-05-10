@@ -70,8 +70,9 @@ print "Hello, World!";
 ```
 
 ### Variables
-`*Coming soon*`
-will look like:
+> [!NOTE]
+> *Coming soon* and will look like:
+
 ```c
 var name = "Pilox";
 var version = 0.1;
@@ -79,8 +80,9 @@ print "Running " + name + " version " + version;
 ```
 
 ### Control Flow
-`*Coming soon*`
-will look like:
+> [!NOTE]
+> *Coming soon* and will look like:
+
 ```c
 var max = 10;
 var i = 0;
@@ -92,8 +94,9 @@ while (i < max) {
 ```
 
 ### Functions
-`*Coming soon*`
-will look like:
+> [!NOTE]
+> *Coming soon* and will look like:
+
 ```c
 fun factorial(n) {
   if (n <= 1) return 1;

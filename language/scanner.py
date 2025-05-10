@@ -42,6 +42,9 @@ class Scanner:
         self.current += 1
         return self.source[self.current-1]
     
+    def peek(self):
+        """Get the next character without advancing the current position."""
+        return '\0' if self.isAtEnd() else self.source[self.current]
     
     def scanToken(self):
         c = self.advance()
@@ -80,6 +83,20 @@ class Scanner:
             case '>':
                 # self.twoPairCheck('=', TokenType.GREATER, TokenType.GREATER_EQUAL)
                 self.addToken(TokenType.GREATER_EQUAL if self.match('=') else TokenType.GREATER)
+            case ' ':
+                pass
+            case '\r':
+                pass
+            case '\t':
+                pass
+            case '\n':
+                self.line += 1
+            case '/':
+                if self.match('/'):
+                    while not self.isAtEnd() and self.source[self.current] != '\n':
+                        self.advance()
+                else:
+                    self.addToken(TokenType.SLASH)
             case _:
                 print("UNEXPECTED CHARACTER, PILO IS ANGY NOW!!")
     
