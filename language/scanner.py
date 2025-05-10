@@ -47,6 +47,7 @@ class Scanner:
         return '\0' if self.isAtEnd() else self.source[self.current]
     
     def scanToken(self):
+        from Pilox import error
         c = self.advance()
         match c:
             case '|':
@@ -83,14 +84,12 @@ class Scanner:
             case '>':
                 # self.twoPairCheck('=', TokenType.GREATER, TokenType.GREATER_EQUAL)
                 self.addToken(TokenType.GREATER_EQUAL if self.match('=') else TokenType.GREATER)
-            case ' ':
-                pass
-            case '\r':
-                pass
-            case '\t':
+            case ' ' | '\r' | '\t':
                 pass
             case '\n':
                 self.line += 1
+            case '"':
+                self.string()
             case '/':
                 if self.match('/'):
                     while not self.isAtEnd() and self.source[self.current] != '\n':
@@ -98,8 +97,21 @@ class Scanner:
                 else:
                     self.addToken(TokenType.SLASH)
             case _:
-                print("UNEXPECTED CHARACTER, PILO IS ANGY NOW!!")
+                error("UNEXPECTED CHARACTER, PILO IS ANGY NOW!!")
     
+    def string(self):
+        from Pilox import error
+        while self.peek() != '"' and not self.isAtEnd():
+            if self.peek == '\n':
+                self.line += 1
+            self.advance()
+        if self.isAtEnd():
+            error(self.line,"WHOOPS!! LOOK WHO DIDN'T TERMINATE THEIR STRING")
+            return
+        self.advance()
+        value: str = self.source[self.start + 1 : self.current - 1]
+        self.addToken(TokenType.STRING, value)
+         
     def match(self, expected: str) -> bool:
         """Check if the next character matches the expected character.
 
