@@ -97,7 +97,23 @@ class Scanner:
                 else:
                     self.addToken(TokenType.SLASH)
             case _:
-                error("UNEXPECTED CHARACTER, PILO IS ANGY NOW!!")
+                if c.isnumeric():
+                    self.number()
+                else:
+                    error("UNEXPECTED CHARACTER, PILO IS ANGY NOW!!")
+    def number(self):
+        while self.peek().isnumeric():
+            self.advance()
+            
+        if self.peek() == '.' and self.peekNext().isnumeric():
+            self.advance()
+            while self.peek().isnumeric():
+                self.advance()
+        
+        self.addToken(TokenType.NUMBER, float(self.source[self.start: self.current]))
+    
+    def peekNext(self):
+        return '\0' if self.current + 1 >= len(self.source) else self.source.charAt(self.current + 1)
     
     def string(self):
         from Pilox import error
