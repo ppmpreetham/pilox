@@ -1,6 +1,12 @@
 import sys
+import os
+import platform
 from TokenType import TokenType, Token
 from scanner import Scanner
+from Colors import colors
+
+if platform.system() == 'Windows':
+    os.system('color')
 
 hadError = False
 hadRuntimeError = False
@@ -25,10 +31,10 @@ def runfile(filename):
             sys.exit(70) # EX_SOFTWARE
             
     except FileNotFoundError:
-        print(f"Error: Could not find file '{filename}'")
+        print(f"{colors.FAIL}Error: Could not find file '{filename}'{colors.ENDC}")
         sys.exit(66)  # EX_NOINPUT
     except Exception as e:
-        print(f"Error reading file: {e}")
+        print(f"{colors.FAIL}Error reading file: {e}{colors.ENDC}")
         sys.exit(74)  # EX_IOERR
 
 def run(source):
@@ -77,7 +83,7 @@ def error(line: int, message: str):
         line (int): the line number where the error occurred
         message (str): the error message to be printed
     """
-    print(f"[line {line}] Error: {message}")
+    print(f"[line {line}] {colors.FAIL}Error: {message}{colors.ENDC}")
 
 def report_error(line: int, where: str, message: str):
     """Reports an error message to the console with a specific line and location.
