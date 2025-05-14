@@ -9,6 +9,25 @@ class Scanner:
     line: int = 1
     source = ""
     
+    keywords: map = {
+            "and": TokenType.AND,
+            "class": TokenType.CLASS,
+            "else": TokenType.ELSE,
+            "false": TokenType.FALSE,
+            "for": TokenType.FOR,
+            "fun": TokenType.FUN,
+            "if": TokenType.IF,
+            "nil": TokenType.NIL,
+            "or": TokenType.OR,
+            "print": TokenType.PRINT,
+            "return": TokenType.RETURN,
+            "super": TokenType.SUPER,
+            "this": TokenType.THIS,
+            "true": TokenType.TRUE,
+            "var": TokenType.VAR,
+            "while": TokenType.WHILE
+    }
+    
     def __init__(self, source: str):
         self.source = source
         
@@ -99,8 +118,17 @@ class Scanner:
             case _:
                 if c.isnumeric():
                     self.number()
+                elif c.isalpha():
+                    self.identifier()
                 else:
                     error("UNEXPECTED CHARACTER, PILO IS ANGY NOW!!")
+                    
+    def identifier(self):
+        while self.peek().isalnum():
+            self.advance()
+        
+        self.addToken(TokenType.IDENTIFIER)
+    
     def number(self):
         while self.peek().isnumeric():
             self.advance()
