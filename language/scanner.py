@@ -126,8 +126,14 @@ class Scanner:
     def identifier(self):
         while self.peek().isalnum():
             self.advance()
+        text = self.source[self.start: self.current]
+        type = self.keywords.get(text)
+        if type is None:
+            type = TokenType.IDENTIFIER
+        else:
+            type = type
+        self.addToken(type)
         
-        self.addToken(TokenType.IDENTIFIER)
     
     def number(self):
         while self.peek().isnumeric():
