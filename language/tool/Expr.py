@@ -15,7 +15,11 @@ class GenerateAST:
             f.write(f"  \"\"\"Base class for all {baseName} expression nodes in the AST.\"\"\"\n")
             f.write(f"  pass\n\n")
             
-            
+            for type in types:
+                className = type.split(":")[0].strip()
+                fields = type.split(":")[1].strip().split(",")
+                self.defineType(self, output, className, fields)
+                
             f.close()
         
     def main(self): 
@@ -24,4 +28,12 @@ class GenerateAST:
             exit(64)
             
         output = argv[1]
-        self.defineAST(output, "Expr", ["Binary", "Grouping", "Literal", "Unary"])
+        self.defineAST(output, "Expr", [
+            "Binary : Expr left, Token operator, Expr right", 
+            "Grouping : Expr expression",
+            "Literal : Object value",
+            "Unary : Token operator, Expr right"
+        ])
+
+    def defineType(self, output, baseName, types):
+        ...
