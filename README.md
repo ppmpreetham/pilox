@@ -62,6 +62,11 @@ To execute a Pilox script file:
 pilox ./path/to/script.plx
 ```
 
+### Generate ASTs:
+```bash
+python -m language.tool.Expr language
+```
+
 ## Examples
 
 ### Hello World
