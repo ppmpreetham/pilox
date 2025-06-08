@@ -1,7 +1,6 @@
 from typing import Any
 from Expr import Expr, Binary, Grouping, Literal, Unary, ExprVisitor
-from TokenType import Token
-from language.TokenType import TokenType
+from TokenType import TokenType, Token
 
 class ASTPrinter(ExprVisitor):
     """Prints an AST in a lisp-like notation."""
