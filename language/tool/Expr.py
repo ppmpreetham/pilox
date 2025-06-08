@@ -14,12 +14,21 @@ class GenerateAST:
             f.write(f"class {baseName}:\n")
             f.write(f"    \"\"\"Base class for all {baseName} expression nodes.\"\"\"\n")
             f.write(f"    pass\n\n")
-
+            self.defineVisitor(f, baseName, types)
+            
             for type_def in types:
                 className, fields_raw = map(str.strip, type_def.split(":"))
                 fields = [f.strip() for f in fields_raw.split(",")]
                 self.defineType(f, baseName, className, fields)
 
+    def defineVisitor(self, f, baseName, types):
+        f.write(f"class {baseName}Visitor:\n")
+        f.write(f"    \"\"\"Visitor interface for {baseName} nodes.\"\"\"\n")
+        for type_def in types:
+            typeName, _ = map(str.strip, type_def.split(":"))
+            f.write(f"    def visit_{typeName.lower()}{baseName.lower()}(self, {baseName.lower()}: {typeName}) -> Any:\n")
+            f.write(f"        \"\"\"Visit a {typeName} node.\"\"\"\n")
+            
     def defineType(self, f, baseName, className, fields):
         f.write(f"class {className}({baseName}):\n")
         f.write(f"    \"\"\"{className} node in the AST.\"\"\"\n")
