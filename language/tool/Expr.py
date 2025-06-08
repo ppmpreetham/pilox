@@ -29,7 +29,7 @@ class GenerateAST:
         f.write(f"    \"\"\"Visitor interface for {baseName} nodes.\"\"\"\n")
         for type_def in types:
             typeName, _ = map(str.strip, type_def.split(":"))
-            f.write(f"    def visit_{typeName.lower()}{baseName.lower()}(self, {baseName.lower()}: {typeName}) -> Any:\n")
+            f.write(f"    def visit_{typeName.lower()}{baseName.lower()}(self, {baseName.lower()}: '{typeName}') -> Any:\n")
             f.write(f"        \"\"\"Visit a {typeName} node.\"\"\"\n")
             
     def defineType(self, f, baseName, className, fields):
@@ -43,7 +43,9 @@ class GenerateAST:
             name, typ = map(str.strip, field.split(" "))
             f.write(f"    {name}: {typ}\n")
 
-        f.write(f"\n    def __init__(self, {', '.join(fields)}):\n")
+        param_names = [field.split(" ")[0] for field in fields]
+        f.write(f"\n    def __init__(self, {', '.join(param_names)}):\n")
+        
         for field in fields:
             name = field.split(" ")[0]
             f.write(f"        self.{name} = {name}\n")
