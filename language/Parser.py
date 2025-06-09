@@ -1,6 +1,6 @@
 from TokenType import *
 from typing import Any, List
-from Expr import Expr
+from Expr import Expr, Binary
 
 class Parser:
     """Parser for the Pilox language."""
@@ -13,16 +13,48 @@ class Parser:
         return self.equality()
     
     def equality(self) -> Expr:
-        """equality → comparison ( ( "!=" | "==" ) comparison )* ;"""
-        expr: Expr = self.comparison() # just comparison (a)
+        """equality → comparision ( ( "!=" | "==" ) comparision )* ;"""
+        expr: Expr = self.comparision() # just comparison (a)
 
         while self.match(TokenType.BANG_EQUAL, TokenType.EQUAL_EQUAL):
             operator: Token = self.previous() # operator token
-            right: Expr = self.comparison() # right side of the operator
-            expr = Expr.Binary(left=expr, operator=operator, right=right) # example: a == b
+            right: Expr = self.comparision() # right side of the operator
+            expr = Binary(left=expr, operator=operator, right=right) # example: a == b
 
         return expr
     
+    def comparision(self) -> Expr:
+        """comparision → term ( ( ">" | ">=" | "<" | "<=" ) term )* ;"""
+        expr: Expr = self.term()
+        while self.match(TokenType.GREATER, TokenType.GREATER_EQUAL, TokenType.LESS, TokenType.LESS_EQUAL):
+            operator: Token = self.previous()
+            right: Token = self.term()
+            expr = Binary(left=expr, operator=operator, right=right)
+        
+        return expr
+    
+    def term(self) -> Expr:
+        """term → factor ( ( "-" | "+" ) factor )* ;"""
+        expr: Expr = self.factor()
+        
+        while(self.match(TokenType.MINUS, TokenType.PLUS)):
+            operator: TokenType = self.previous()
+            right: TokenType = self.factor()
+            expr = Binary(left=expr, operator=operator, right=right)
+        
+        return expr
+    
+    def factor(self) -> Expr:
+        """factor → unary ( ( "/" | "*" ) unary )* ;"""
+        expr: Expr = self.unary()
+        
+        while(self.match(TokenType.SLASH, TokenType.STAR)):
+            operator: TokenType = self.previous()
+            right: TokenType = self.unary()
+            expr = Binary(left=expr, operator=operator, right=right)
+        
+        return expr
+        
     # Helper Methods
     def match(self, *types: TokenType) -> bool:
         """Check if the next token is of the specified type(s) and consume it."""
