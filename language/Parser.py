@@ -1,6 +1,6 @@
 from TokenType import *
 from typing import Any, List
-from Expr import Expr, Binary
+from Expr import Expr, Binary, Unary, Literal, Grouping
 
 class Parser:
     """Parser for the Pilox language."""
@@ -38,8 +38,8 @@ class Parser:
         expr: Expr = self.factor()
         
         while(self.match(TokenType.MINUS, TokenType.PLUS)):
-            operator: TokenType = self.previous()
-            right: TokenType = self.factor()
+            operator: Token = self.previous()
+            right: Token = self.factor()
             expr = Binary(left=expr, operator=operator, right=right)
         
         return expr
@@ -49,11 +49,40 @@ class Parser:
         expr: Expr = self.unary()
         
         while(self.match(TokenType.SLASH, TokenType.STAR)):
-            operator: TokenType = self.previous()
-            right: TokenType = self.unary()
+            operator: Token = self.previous()
+            right: Token = self.unary()
             expr = Binary(left=expr, operator=operator, right=right)
         
         return expr
+    
+    def unary(self) -> Expr:
+        """unary → ( "!" | "-" ) unary | primary ;"""
+        if self.match(TokenType.BANG, TokenType.MINUS):
+            operator: Token = self.previous()
+            right: Expr = self.unary()
+            return Unary(operator=operator, right=right)
+        
+        return self.primary()
+    
+    def primary(self) -> Expr:
+        """primary → NUMBER | STRING | "true" | "false" | "nil" | "(" expression ")" ;"""
+        if self.match(TokenType.FALSE):
+            return Literal(False)
+        
+        if self.match(TokenType.TRUE):
+            return Literal(True)
+        
+        if self.match(TokenType.NIL):
+            return Literal(None)
+        
+        if self.match(TokenType.NUMBER, TokenType.STRING):
+            return Literal(self.previous().literal)
+        
+        if self.match(TokenType.LEFT_PAREN):
+            expr: Expr = self.expression()
+            if not self.match(TokenType.RIGHT_PAREN):
+                raise Exception("Expected ')' after expression.")
+            return Grouping(expr)
         
     # Helper Methods
     def match(self, *types: TokenType) -> bool:
