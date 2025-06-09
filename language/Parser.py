@@ -22,3 +22,35 @@ class Parser:
             expr = Expr.Binary(left=expr, operator=operator, right=right) # example: a == b
 
         return expr
+    
+    # Helper Methods
+    def match(self, *types: TokenType) -> bool:
+        """Check if the next token is of the specified type(s) and consume it."""
+        for token_type in types:
+            if self.check(token_type):
+                self.advance()
+                return True
+        return False
+    
+    def check(self, token_type: TokenType) -> bool:
+        if self.isAtEnd():
+            return False
+        return type(self.peek()) == token_type
+    
+    def advance(self) -> Token:
+        """Consume the next token and return it."""
+        if not self.isAtEnd():
+            self.current += 1
+        return self.previous()
+    
+    def isAtEnd(self) -> bool:
+        """Check if the parser has reached the end of the token list."""
+        return self.peek().type == TokenType.EOF
+    
+    def peek(self) -> Token:
+        """Return the next token without consuming it."""
+        return self.tokens[self.current]
+    
+    def previous(self) -> Token:
+        """Return the previous token."""
+        return self.tokens[self.current - 1] if self.current > 0 else None
