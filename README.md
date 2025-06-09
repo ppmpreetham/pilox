@@ -32,6 +32,14 @@ cd pilox
 # No installation required - pure Python implementation
 ```
 
+### Build From Source
+
+1) Generate ASTs:
+```bash
+python -m language.tool.Expr language
+```
+
+
 ## Usage
 ```bash
 python language/main.py
@@ -60,11 +68,6 @@ To execute a Pilox script file:
 
 ```bash
 pilox ./path/to/script.plx
-```
-
-### Generate ASTs:
-```bash
-python -m language.tool.Expr language
 ```
 
 ## Examples
@@ -127,6 +130,18 @@ Pilox is built following a classic compiler pipeline:
 
 1. **Scanning/Lexing** (Implemented): Converting source text into tokens
 2. **Parsing** (In progress): Building an abstract syntax tree
+The grammar goes like this:
+
+```python
+primary → NUMBER | STRING | "true" | "false" | "nil" | "(" expression ")" ;
+unary → ( "!" | "-" ) unary | primary ;
+factor → unary ( ( "/" | "*" ) unary )* ;
+term → factor ( ( "-" | "+" ) factor )* ;
+comparison → term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
+equality → comparison ( ( "!=" | "==" ) comparison )* ;
+expression → equality ;
+```
+
 3. **Static Analysis** (Planned): Scope resolution and type checking
 4. **Interpretation/Compilation** (Planned): Executing or translating the code
 

@@ -36,7 +36,6 @@ class GenerateAST:
     def defineType(self, f, baseName, className, fields):
         f.write(f"class {className}({baseName}):\n")
         f.write(f"    \"\"\"{className} node in the AST.\"\"\"\n")
-        # Add the accept method override
         f.write("\n    def accept(self, visitor):\n")
         f.write(f"        return visitor.visit_{className.lower()}{baseName.lower()}(self)\n")
         
