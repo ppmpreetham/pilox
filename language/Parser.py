@@ -1,5 +1,5 @@
 from TokenType import *
-from typing import Any, List
+from typing import List
 from Expr import Expr, Binary, Unary, Literal, Grouping
 
 class Parser:
@@ -80,8 +80,7 @@ class Parser:
         
         if self.match(TokenType.LEFT_PAREN):
             expr: Expr = self.expression()
-            if not self.match(TokenType.RIGHT_PAREN):
-                raise Exception("Expected ')' after expression.")
+            self.consume(TokenType.RIGHT_PAREN, "Expect ')' after expression.")
             return Grouping(expr)
         
     # Helper Methods
@@ -115,3 +114,9 @@ class Parser:
     def previous(self) -> Token:
         """Return the previous token."""
         return self.tokens[self.current - 1] if self.current > 0 else None
+    
+    def consume(self, type: TokenType, message: str) -> Token:
+        if self.check(type):
+            return self.advance()
+        
+        raise Exception(self.peek(), message)
